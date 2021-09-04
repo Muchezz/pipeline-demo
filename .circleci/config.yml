@@ -15,9 +15,13 @@ jobs:
 
   jina_langu:
     docker: 
-      - image: circleci/node:13.8.0
+      - image: cimg/base:2020.01
     steps:
-      - run: echo $MY_ENV_VAR
+      - checkout
+      - run: 
+        name: " echo a name var stored in the project enviroment"
+        command: |
+        echo $MY_ENV_VAR
 
 
 workflows:
