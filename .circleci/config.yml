@@ -23,7 +23,7 @@ jobs:
     steps:
       - run: echo "text to output here" > output.txt
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: ~/
           paths: output.txt
 
   print_output_file:
@@ -31,8 +31,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - attach_workspace:
-          at: /tmp/workspace 
-      - run: cat output.txt
+          at: ~/
+      - run: cat ~/output.txt
 
 workflows:
   
