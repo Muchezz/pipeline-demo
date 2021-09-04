@@ -23,9 +23,7 @@ jobs:
         command: |
         echo $MY_ENV_VAR
 
-
 workflows:
-  
   welcome:
     jobs:
       - print_hello
