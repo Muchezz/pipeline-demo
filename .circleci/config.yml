@@ -14,7 +14,8 @@ jobs:
       - run: echo Jambo
 
   jina_langu:
-    docker: - image: circleci/node:13.8.0
+    docker: 
+      - image: circleci/node:13.8.0
     steps:
       - run: echo $MY_ENV_VAR
 
