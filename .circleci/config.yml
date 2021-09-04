@@ -1,33 +1,44 @@
 version: 2.1
 jobs:
-  print_hello:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - run: echo Hello
-          
-          
   print_jambo:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - run: echo Jambo
 
+# Working with Enviroment Variables
+
   jina_langu:
     docker: 
-      - image: cimg/base:2020.01
+    - image: circleci/node:13.8.0
     steps:
-      - checkout
-      - run: 
-        name: " echo a name var stored in the project enviroment"
-        command: |
-          echo $MY_ENV_VAR
+      - run: echo $MY_ENV_VAR
+
+
+#Sharing Files
+
+  save_hello_world_output:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: echo "text to output here" > output.txt
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths: output.txt
+
+  print_output_file:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace 
+      - run: cat output.txt
 
 workflows:
+  
   welcome:
     jobs:
-      - print_hello
-      
-      - print_jambo:
-          requires:
-            - print_hello
+      - print_jambo
+      - jina_langu
+      - save_hello_world_output
+      - print_output_file
