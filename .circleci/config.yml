@@ -27,7 +27,7 @@ workflows:
   welcome:
     jobs:
       - print_hello
-      - jina_langu
+      
       - print_jambo:
           requires:
             - print_hello
