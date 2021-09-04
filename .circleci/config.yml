@@ -13,11 +13,18 @@ jobs:
     steps:
       - run: echo Jambo
 
+  jina_langu:
+    docker: - image: circleci/node:13.8.0
+    steps:
+      - run: echo $MY_ENV_VAR
+
+
 workflows:
   
   welcome:
     jobs:
       - print_hello
+      - jina_langu
       - print_jambo:
           requires:
             - print_hello
