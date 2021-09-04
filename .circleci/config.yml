@@ -21,7 +21,7 @@ jobs:
       - run: 
         name: " echo a name var stored in the project enviroment"
         command: |
-        echo $MY_ENV_VAR
+          echo $MY_ENV_VAR
 
 workflows:
   welcome:
