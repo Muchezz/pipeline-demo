@@ -35,6 +35,19 @@ jobs:
           at: ~/
       - run: cat ~/output.txt
 
+      #Job failure and how to react to it
+
+  job_failure_test:
+    docker:
+      - image: circleci/node:13.8.0
+
+    steps:
+      - run: return 1
+      - run:
+          name: on error
+          command: echo "Hello Your first Job Failure"
+          when: on_fail
+
 workflows:
   
   welcome:
@@ -45,3 +58,5 @@ workflows:
       - print_output_file:
           requires:
             - save_hello_world_output
+
+      - job_failure_test
