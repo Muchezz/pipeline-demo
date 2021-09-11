@@ -1,4 +1,21 @@
 version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@2.0.3
+
+commands:
+  # Exercise - Rollback
+  destroy_environment:
+    steps:
+      - run:
+          name: Destroy environment
+          # ${CIRCLE_WORKFLOW_ID} is a Built-in environment variable 
+          # ${CIRCLE_WORKFLOW_ID:0:5} takes the first 5 chars of the variable CIRCLE_CI_WORKFLOW_ID 
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5}
+          
+
+
 jobs:
   print_jambo:
     docker:
@@ -35,18 +52,28 @@ jobs:
           at: ~/
       - run: cat ~/output.txt
 
-      #Job failure and how to react to it
 
-  job_failure_test:
+# Exercise: Infrastructure Creation
+# Exercise - Rollback
+
+  create_infrastructure:
     docker:
-      - image: circleci/node:13.8.0
+      - image: amazon/aws-cli
 
     steps:
-      - run: return 1
+      - checkout
       - run:
-          name: on error
-          command: echo "Hello Your first Job Failure"
-          when: on_fail
+          name: Create Cloudformation Stack
+          command: |
+            aws cloudformation deploy \
+              --template-file template.yml \
+              --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+              --region us-west-2
+
+       # Fail the job intentionally to simulate an error.
+       # Uncomment the line below if you want to fail the current step
+       # - run: return 1
+      - destroy_environment  
 
 workflows:
   
@@ -59,4 +86,4 @@ workflows:
           requires:
             - save_hello_world_output
 
-      - job_failure_test
+      - create_infrastructure
