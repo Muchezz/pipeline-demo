@@ -83,9 +83,31 @@ jobs:
        # - run: return 1
       - destroy_environment  
 
+  # Exercise: Config and Deployment
+  configure_infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "6f:35:36:75:42:53:13:09:fc:a3:93:60:25:a2:70:a3"
+      - run:
+          name: Install dependencies
+          command: |
+            # install the dependencies needed for your playbook
+            apk add --update ansible
+      - run:
+          name: Configure server
+          command: |
+            ansible-playbook -i inventory.txt main.yml
+
+
+# Workflows
+
 workflows:
-  
-  welcome:
+  CICD_Pipelines:
     jobs:
       - print_jambo
       - jina_langu
