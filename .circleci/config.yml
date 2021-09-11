@@ -20,23 +20,24 @@ commands:
             aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5}
 
 jobs:
-  create_infrastructure:
-    executor: aws-cli/default
+   # Exercise: Infrastructure Creation
+  # Exercise - Rollback
+  create_infrastructure: 
+    docker:
+      - image: amazon/aws-cli
     steps:
       - checkout
-      - aws-cli/setup
       - run:
-          name: Ensure backend infrastructure exist
+          name: Create Cloudformation Stack
           command: |
-            pwd
-            ls -la
             aws cloudformation deploy \
               --template-file template.yml \
-              --stack-name my-stack
+              --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+              --region us-west-1
       # Fail the job intentionally to simulate an error.
       # Uncomment the line below if you want to fail the current step
       # - run: return 1
-      - destroy_environment
+      #- destroy_environment
 
 
 workflows:
