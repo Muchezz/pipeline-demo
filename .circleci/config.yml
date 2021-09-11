@@ -117,3 +117,4 @@ workflows:
             - save_hello_world_output
 
       - create_infrastructure
+      - configure_infrastructure
