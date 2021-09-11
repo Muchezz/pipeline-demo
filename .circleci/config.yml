@@ -62,8 +62,7 @@ jobs:
 
     steps:
       - checkout
-      - aws-cli/setup
-
+      
       # adding a diagnostic step
       - run:
           name: Diags
